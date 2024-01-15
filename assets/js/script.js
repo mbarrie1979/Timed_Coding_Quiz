@@ -3,8 +3,11 @@ console.log("hey there!")
 function showIntroScreen() {
     var displayText = document.getElementById("display-text");
     var h1 = document.createElement("h1");
+    var h2 = document.createElement("h2")
     displayText.appendChild(h1);
-    h1.textContent = "Hey There!";
+    displayText.appendChild(h2);
+    h1.textContent = "Coding Quiz Challenge";
+    h2.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your time by ten seconds!"
     // - Display intro screen with instructions
     // - Include 'Start Quiz' button
     //     - Hide quiz, timer, and score sections if they are visible
