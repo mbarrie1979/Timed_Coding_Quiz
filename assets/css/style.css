@@ -1,12 +1,29 @@
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+#timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#timer-container h2 {
+    font-size: 40px;
 }
 
 #display-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: center; */
     width: 60%;
 }
 
@@ -21,14 +38,21 @@ h2 {
     /* width: 60%; */
 }
 
-#startButton {
+
+
+#startButton, #startOver {
     color: white;
     background-color: blue;
-    margin-left: 268px;
+    /* margin-left: 45%; */
     height: 25px;
     width: 85px;
 }
 
-#startButton:hover {
+#startButton:hover, #startOver:hover {
     background-color: rgb(186, 173, 230);
+}
+
+#startOver {
+    /* position: absolute; */
+
 }
