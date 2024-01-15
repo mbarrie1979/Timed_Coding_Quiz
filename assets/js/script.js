@@ -22,7 +22,7 @@ startButton.addEventListener("click", startGame);
 
 function showIntroScreen() {
     gameOver = false;
-   testText.classList.add("hidden");
+    testText.classList.add("hidden");
     h1.classList.remove("hidden");
     h2.classList.remove("hidden");
     startButton.classList.remove("hidden");
@@ -54,10 +54,9 @@ startOverButton.addEventListener("click", function () {
 
 });
 
-var count;
+var count = 10;
 
 function beginTimer(duration) {
-  
     count = 0;
     countDown.classList.remove("hidden")
     count = duration;
@@ -68,11 +67,12 @@ function beginTimer(duration) {
         } else {
             clearInterval(intervalId);
             countDown.textContent = "";
+            gameOver = true;
             finishGame();
 
 
         }
-    }, 1000)
+    }, 100)
 
 
 
@@ -86,6 +86,7 @@ function beginTimer(duration) {
 
 
 function startGame() {
+    countDown.textContent = count;
     beginTimer(10)
     h1.classList.add("hidden")
     h2.classList.add("hidden")
@@ -93,6 +94,7 @@ function startGame() {
     startOverButton.classList.remove("hidden")
     testText.classList.remove("hidden")
     chooseQuestion()
+
     // - Call beginTimer() with the specified duration
     //     - Hide intro screen
     //         - Display quiz section
@@ -103,12 +105,29 @@ function startGame() {
 var testContainer = document.getElementById("test-section");
 var testText = document.createElement("h2");
 testContainer.appendChild(testText);
-testText.textContent = "TEST"
+
+
+var testButtons = [];
+
+function makeTestButtons() {
+    for (var i = 0; i < 4; i++) {
+        var testButton = document.createElement("button");
+        testContainer.appendChild(testButton);
+        testButton.setAttribute("id", "test-button")
+        testButton.classList.add("hidden")
+        testButtons.push(testButton)
+    }
+}
+makeTestButtons()
 
 function chooseQuestion() {
     var randomQuestion = Math.floor(Math.random() * jsQuizQuestions.length)
     var question = jsQuizQuestions[randomQuestion];
     testText.textContent = `${question.question}`
+    for (var i = 0; i < 4; i++) {
+        testButtons[i].classList.remove("hidden")
+    }
+
     // - If there are remaining questions:
     // - Select a question randomly or sequentially
     //     - Display question and corresponding answers
@@ -125,6 +144,12 @@ function processAnswer(selectedAnswer) {
 
 
 function finishGame() {
+    if (count === 0)  {
+        for (var i = 0; i < 4; i++) {
+            testButtons[i].classList.add("hidden")
+        }
+        testText.classList.add("hidden")
+    }
     // - Stop the timer
     //     - Display game over screen
     //         - Show user's score
