@@ -40,7 +40,7 @@ h2 {
 
 
 
-#startButton, #startOver {
+#startButton, #startOver, #test-button {
     color: white;
     background-color: blue;
     /* margin-left: 45%; */
@@ -48,11 +48,20 @@ h2 {
     width: 85px;
 }
 
-#startButton:hover, #startOver:hover {
+#startButton:hover, #startOver:hover, #test-button:hover {
     background-color: rgb(186, 173, 230);
 }
 
 #startOver {
     /* position: absolute; */
 
+}
+
+#test-section {
+    display: flex;
+    flex-direction: column;
+}
+
+#test-button {
+    margin: .5em;
 }
