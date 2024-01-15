@@ -1,25 +1,82 @@
 console.log("hey there!")
 
+var gameOver = false;
+var intervalId;
+
+var displayText = document.getElementById("display-text");
+var buttonSection = document.getElementById("button-container");
+var h1 = document.createElement("h1");
+var h2 = document.createElement("h2");
+var startButton = document.createElement("button");
+displayText.appendChild(h1);
+displayText.appendChild(h2);
+buttonSection.appendChild(startButton);
+startButton.setAttribute("id", "startButton")
+h1.textContent = "Coding Quiz Challenge";
+h2.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your time by ten seconds!"
+startButton.textContent = "Start Quiz"
+
+// when start quiz button is clicked
+startButton.addEventListener("click", startGame);
+
+
 function showIntroScreen() {
-    var displayText = document.getElementById("display-text");
-    var h1 = document.createElement("h1");
-    var h2 = document.createElement("h2");
-    var startButton = document.createElement("button");
-    displayText.appendChild(h1);
-    displayText.appendChild(h2);
-    displayText.appendChild(startButton);
-    startButton.setAttribute("id", "startButton")
-    h1.textContent = "Coding Quiz Challenge";
-    h2.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your time by ten seconds!"
-    startButton.textContent = "Start Quiz"
+    gameOver = false;
+   testText.classList.add("hidden");
+    h1.classList.remove("hidden");
+    h2.classList.remove("hidden");
+    startButton.classList.remove("hidden");
+
+    // beginTimer(30);
     // - Display intro screen with instructions
     // - Include 'Start Quiz' button
     //     - Hide quiz, timer, and score sections if they are visible
 }
 
+// Creates area for timer
+var timerArea = document.getElementById("timer-container");
+var countDown = document.createElement("h2")
+timerArea.appendChild(countDown)
+// Creates start over button
+var startOverButton = document.createElement("button")
+timerArea.appendChild(startOverButton)
+startOverButton.setAttribute("id", "startOver")
+startOverButton.classList.add("hidden")
+startOverButton.textContent = "Start Over";
 
+// Function for when the start over button is clicked
+startOverButton.addEventListener("click", function () {
+    clearInterval(intervalId);
+    gameOver = true;
+    countDown.textContent = "";
+    showIntroScreen();
+    startOverButton.classList.add("hidden")
+
+});
+
+var count;
 
 function beginTimer(duration) {
+  
+    count = 0;
+    countDown.classList.remove("hidden")
+    count = duration;
+    intervalId = setInterval(function () {
+        if (count > 0) {
+            count--;
+            countDown.textContent = count;
+        } else {
+            clearInterval(intervalId);
+            countDown.textContent = "";
+            finishGame();
+
+
+        }
+    }, 1000)
+
+
+
+
     // - Set timer to given duration
     //     - Start countdown(decrement timer every second)
     //         - Update timer display on screen
@@ -29,6 +86,13 @@ function beginTimer(duration) {
 
 
 function startGame() {
+    beginTimer(10)
+    h1.classList.add("hidden")
+    h2.classList.add("hidden")
+    startButton.classList.add("hidden")
+    startOverButton.classList.remove("hidden")
+    testText.classList.remove("hidden")
+    chooseQuestion()
     // - Call beginTimer() with the specified duration
     //     - Hide intro screen
     //         - Display quiz section
@@ -36,7 +100,15 @@ function startGame() {
 }
 
 
+var testContainer = document.getElementById("test-section");
+var testText = document.createElement("h2");
+testContainer.appendChild(testText);
+testText.textContent = "TEST"
+
 function chooseQuestion() {
+    var randomQuestion = Math.floor(Math.random() * jsQuizQuestions.length)
+    var question = jsQuizQuestions[randomQuestion];
+    testText.textContent = `${question.question}`
     // - If there are remaining questions:
     // - Select a question randomly or sequentially
     //     - Display question and corresponding answers
