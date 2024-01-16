@@ -21,8 +21,9 @@ startButton.addEventListener("click", startGame);
 
 
 function showIntroScreen() {
-    gameOver = false;
+    winLoseMessage.classList.add("hidden");
     testText.classList.add("hidden");
+    scoreText.classList.add("hidden");
     h1.classList.remove("hidden");
     h2.classList.remove("hidden");
     startButton.classList.remove("hidden");
@@ -49,12 +50,14 @@ startOverButton.addEventListener("click", function () {
     clearInterval(intervalId);
     gameOver = true;
     countDown.textContent = "";
+    finishGame()
     showIntroScreen();
     startOverButton.classList.add("hidden")
 
+
 });
 
-var count = 10;
+var count = 100;
 
 function beginTimer(duration) {
     count = 0;
@@ -72,7 +75,7 @@ function beginTimer(duration) {
 
 
         }
-    }, 100)
+    }, 1000)
 
 
 
@@ -86,13 +89,15 @@ function beginTimer(duration) {
 
 
 function startGame() {
+    gameOver = false;
     countDown.textContent = count;
-    beginTimer(10)
+    beginTimer(100)
     h1.classList.add("hidden")
     h2.classList.add("hidden")
     startButton.classList.add("hidden")
     startOverButton.classList.remove("hidden")
     testText.classList.remove("hidden")
+    scoreText.classList.remove("hidden")
     chooseQuestion()
 
     // - Call beginTimer() with the specified duration
@@ -103,12 +108,19 @@ function startGame() {
 
 
 var testContainer = document.getElementById("test-section");
+var scoreText = document.createElement("h2")
 var testText = document.createElement("h2");
+testContainer.appendChild(scoreText);
 testContainer.appendChild(testText);
+var scoredisplay = scoreText.textContent;
+var score = 0;
+var correctAnswer;
 
 
 var testButtons = [];
 
+
+// creates buttons for the answers
 function makeTestButtons() {
     for (var i = 0; i < 4; i++) {
         var testButton = document.createElement("button");
@@ -120,12 +132,19 @@ function makeTestButtons() {
 }
 makeTestButtons()
 
+// randomly chooses question from the object, displays question, and assigns answers to buttons
 function chooseQuestion() {
     var randomQuestion = Math.floor(Math.random() * jsQuizQuestions.length)
     var question = jsQuizQuestions[randomQuestion];
+    var answers = [question.answers.a, question.answers.b, question.answers.c, question.answers.d];
+    correctAnswer = question.correctAnswer
+
+
     testText.textContent = `${question.question}`
     for (var i = 0; i < 4; i++) {
-        testButtons[i].classList.remove("hidden")
+        testButtons[i].classList.remove("hidden");
+        testButtons[i].textContent = answers[i];
+        testButtons[i].value = Object.keys(question.answers)[i];
     }
 
     // - If there are remaining questions:
@@ -135,21 +154,60 @@ function chooseQuestion() {
     // - Call finishGame()
 }
 
-function processAnswer(selectedAnswer) {
-    // - Check if selectedAnswer is correct
-    //     - If incorrect, subtract time from timer
-    //         - Call chooseQuestion() for next question
+var messageSection = document.getElementById("message-section");
+var winLoseMessage = document.createElement("h3");
+messageSection.appendChild(winLoseMessage);
+winLoseMessage.textContent = "";
+
+var initialsInput = document.createElement("input");
+messageSection.appendChild(initialsInput);
+winLoseMessage.classList.add("hidden");
+initialsInput.setAttribute("type", "text");
+initialsInput.setAttribute("placeholder", "Enter Your Initials");
+initialsInput.classList.add("hidden");
+
+
+for (var i = 0; i < testButtons.length; i++) {
+    testButtons[i].addEventListener("click", function (e) {
+        console.log(e.target.value)
+        var answerChosen = e.target.value
+        if (answerChosen === correctAnswer) {
+            score++;
+            scoreText.textContent = `Score ${score}`;
+            winLoseMessage.classList.remove("hidden");
+            winLoseMessage.textContent = "Great Job!";
+            chooseQuestion();
+        } else {
+            count -= 10;
+            winLoseMessage.classList.remove("hidden");
+            winLoseMessage.textContent = "Sorry!";
+            chooseQuestion();
+        }
+
+    })
 }
+
+
+// - Check if selectedAnswer is correct
+//     - If incorrect, subtract time from timer
+//         - Call chooseQuestion() for next question
+
 
 
 
 function finishGame() {
-    if (count === 0)  {
-        for (var i = 0; i < 4; i++) {
-            testButtons[i].classList.add("hidden")
-        }
-        testText.classList.add("hidden")
-    }
+    gameOver = true;
+
+    for (var i = 0; i < 4; i++) {
+        testButtons[i].classList.add("hidden")
+    };
+
+    testText.classList.add("hidden")
+    scoreText.classList.add("hidden")
+    winLoseMessage.textContent = `Your Final Score Is ${score}`
+    initialsInput.classList.remove("hidden")
+
+
     // - Stop the timer
     //     - Display game over screen
     //         - Show user's score

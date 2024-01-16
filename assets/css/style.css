@@ -63,5 +63,7 @@ h2 {
 }
 
 #test-button {
+    width: auto;
     margin: .5em;
+    font-size: 20px;
 }
