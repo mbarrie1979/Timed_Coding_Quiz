@@ -1,8 +1,13 @@
 console.log("hey there!")
 
+// Boolean to indicate if the game is active or not 
 var gameOver = false;
+
+// hoisted varible for access outside of timer function
 var intervalId;
 
+
+// creation of elements and text for intro screen
 var displayText = document.getElementById("display-text");
 var buttonSection = document.getElementById("button-container");
 var h1 = document.createElement("h1");
@@ -19,9 +24,10 @@ startButton.textContent = "Start Quiz"
 // when start quiz button is clicked
 startButton.addEventListener("click", startGame);
 
-
+// function for showing intro screen
 function showIntroScreen() {
     winLoseMessage.classList.add("hidden");
+    submitButton.classList.add("hidden")
     testText.classList.add("hidden");
     scoreText.classList.add("hidden");
     h1.classList.remove("hidden");
@@ -38,6 +44,7 @@ function showIntroScreen() {
 var timerArea = document.getElementById("timer-container");
 var countDown = document.createElement("h2")
 timerArea.appendChild(countDown)
+
 // Creates start over button
 var startOverButton = document.createElement("button")
 timerArea.appendChild(startOverButton)
@@ -57,8 +64,10 @@ startOverButton.addEventListener("click", function () {
 
 });
 
-var count = 100;
+// timer display before time counts down 
+var count = 10;
 
+// function for timer
 function beginTimer(duration) {
     count = 0;
     countDown.classList.remove("hidden")
@@ -75,7 +84,7 @@ function beginTimer(duration) {
 
 
         }
-    }, 1000)
+    }, 100)
 
 
 
@@ -87,11 +96,11 @@ function beginTimer(duration) {
 }
 
 
-
+// function to start the game
 function startGame() {
     gameOver = false;
     countDown.textContent = count;
-    beginTimer(100)
+    beginTimer(10)
     h1.classList.add("hidden")
     h2.classList.add("hidden")
     startButton.classList.add("hidden")
@@ -106,6 +115,7 @@ function startGame() {
     //             - Call chooseQuestion() to display the first question
 }
 
+// creates elements related to the quiz, quiz text, score
 
 var testContainer = document.getElementById("test-section");
 var scoreText = document.createElement("h2")
@@ -116,11 +126,11 @@ var scoredisplay = scoreText.textContent;
 var score = 0;
 var correctAnswer;
 
-
+// array for buttons that will have questions on them
 var testButtons = [];
 
 
-// creates buttons for the answers
+// creates buttons for the answers and places them in the testButtons array
 function makeTestButtons() {
     for (var i = 0; i < 4; i++) {
         var testButton = document.createElement("button");
@@ -154,19 +164,27 @@ function chooseQuestion() {
     // - Call finishGame()
 }
 
+
+// creates element that displays when user gets answer right or wrong
 var messageSection = document.getElementById("message-section");
 var winLoseMessage = document.createElement("h3");
 messageSection.appendChild(winLoseMessage);
 winLoseMessage.textContent = "";
 
+// creates element for user to enter initials when game is over
 var initialsInput = document.createElement("input");
+var submitButton = document.createElement("button")
 messageSection.appendChild(initialsInput);
+messageSection.appendChild(submitButton);
 winLoseMessage.classList.add("hidden");
 initialsInput.setAttribute("type", "text");
 initialsInput.setAttribute("placeholder", "Enter Your Initials");
 initialsInput.classList.add("hidden");
+submitButton.setAttribute("id", "submit")
+submitButton.classList.add("hidden")
+submitButton.textContent = "Submit Score"
 
-
+// compares the button clicked with the correct answer from the questions object
 for (var i = 0; i < testButtons.length; i++) {
     testButtons[i].addEventListener("click", function (e) {
         console.log(e.target.value)
@@ -188,9 +206,7 @@ for (var i = 0; i < testButtons.length; i++) {
 }
 
 
-// - Check if selectedAnswer is correct
-//     - If incorrect, subtract time from timer
-//         - Call chooseQuestion() for next question
+
 
 
 
@@ -206,7 +222,7 @@ function finishGame() {
     scoreText.classList.add("hidden")
     winLoseMessage.textContent = `Your Final Score Is ${score}`
     initialsInput.classList.remove("hidden")
-
+    submitButton.classList.remove("hidden")
 
     // - Stop the timer
     //     - Display game over screen
