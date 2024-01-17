@@ -26,6 +26,8 @@ startButton.addEventListener("click", startGame);
 
 // function for showing intro screen
 function showIntroScreen() {
+    count = 20;
+    initialsInput.classList.add("hidden");
     winLoseMessage.classList.add("hidden");
     submitButton.classList.add("hidden")
     testText.classList.add("hidden");
@@ -65,11 +67,12 @@ startOverButton.addEventListener("click", function () {
 });
 
 // timer display before time counts down 
-var count = 10;
+var count = 20;
+
+var score = 0;
 
 // function for timer
 function beginTimer(duration) {
-    count = 0;
     countDown.classList.remove("hidden")
     count = duration;
     intervalId = setInterval(function () {
@@ -84,7 +87,7 @@ function beginTimer(duration) {
 
 
         }
-    }, 100)
+    }, 1000)
 
 
 
@@ -99,8 +102,10 @@ function beginTimer(duration) {
 // function to start the game
 function startGame() {
     gameOver = false;
+    score = 0;
+    scoreText.textContent = `Score ${score}`;
     countDown.textContent = count;
-    beginTimer(10)
+    beginTimer(20)
     h1.classList.add("hidden")
     h2.classList.add("hidden")
     startButton.classList.add("hidden")
@@ -123,7 +128,7 @@ var testText = document.createElement("h2");
 testContainer.appendChild(scoreText);
 testContainer.appendChild(testText);
 var scoredisplay = scoreText.textContent;
-var score = 0;
+
 var correctAnswer;
 
 // array for buttons that will have questions on them
@@ -221,6 +226,7 @@ function finishGame() {
     testText.classList.add("hidden")
     scoreText.classList.add("hidden")
     winLoseMessage.textContent = `Your Final Score Is ${score}`
+    initialsInput.value = "";
     initialsInput.classList.remove("hidden")
     submitButton.classList.remove("hidden")
 
@@ -231,9 +237,36 @@ function finishGame() {
     //                 - Call showHighScores()
 }
 
+submitButton.addEventListener("click", submitScore)
+
+var highScoresSection = document.getElementById("high-scores");
+var highScores = document.createElement("ol");
+highScoresSection.appendChild(highScores);
+
+
+var highScoresArray = [];
+
+
+function submitScore() {
+    submitButton.classList.add("hidden")
+    initialsInput.classList.add("hidden")
+    var initials = initialsInput.value;
+    var newScore = { initials: initials, score: score };
+    highScoresArray.push(newScore);
+    localStorage.setItem("highScores", JSON.stringify(highScoresArray))
+
+    console.log("Score submitted!")
+    showHighScores()
+
+}
+
 
 
 function showHighScores() {
+    var newScore = document.createElement("li");
+    highScoresSection.appendChild(newScore);
+    var highScoreDisplay = JSON.parse(localStorage.getItem("highScores"))
+    newScore.textContent = highScoreDisplay
     // - Retrieve high scores from local storage
     //     - Display high scores
     //         - Include option to restart the quiz or clear high scores
