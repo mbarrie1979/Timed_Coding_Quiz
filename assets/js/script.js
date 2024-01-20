@@ -27,6 +27,7 @@ startButton.addEventListener("click", startGame);
 // function for showing intro screen
 function showIntroScreen() {
     count = 20;
+    scoreList.classList.add("hidden")
     initialsInput.classList.add("hidden");
     winLoseMessage.classList.add("hidden");
     submitButton.classList.add("hidden")
@@ -247,30 +248,83 @@ highScoresSection.appendChild(highScores);
 var highScoresArray = [];
 
 
-function submitScore() {
-    submitButton.classList.add("hidden")
-    initialsInput.classList.add("hidden")
-    var initials = initialsInput.value;
-    var newScore = { initials: initials, score: score };
-    highScoresArray.push(newScore);
-    localStorage.setItem("highScores", JSON.stringify(highScoresArray))
-
-    console.log("Score submitted!")
-    showHighScores()
+function clearHighScores() {
 
 }
+
+function submitScore() {
+    submitButton.classList.add("hidden");
+    initialsInput.classList.add("hidden");
+
+    var initials = initialsInput.value.trim();
+
+    // Load existing scores from localStorage
+    highScoresArray = JSON.parse(localStorage.getItem("highScores")) || [];
+
+    // Create a new score object
+    var newScore = { initials: initials, score: score };
+
+    // Add the new score to the array
+    highScoresArray.push(newScore);
+
+    // Save the updated array to localStorage
+    localStorage.setItem("highScores", JSON.stringify(highScoresArray));
+
+    console.log("Score submitted!");
+    showHighScores();
+}
+// Get the high-scores section element
+var highScoresSection = document.getElementById("high-scores");
+
+// Create a heading (h2) for high scores
+var highScoresH2 = document.createElement("h2");
+highScoresH2.setAttribute("id", "highscore-h2");
+highScoresH2.textContent = "HIGH SCORES";
+
+// Create a button to clear high scores
+var clearHighScoresBtn = document.createElement("button");
+clearHighScoresBtn.setAttribute("id", "clear-button");
+clearHighScoresBtn.textContent = "Clear High Scores"; // Add text or other attributes as needed
+
+// Create an ordered list (ol) for the list of high scores
+var scoreList = document.createElement("ol");
+
+// Prepend the heading and button to the highScoresSection
+highScoresSection.prepend(scoreList);
+highScoresSection.prepend(highScoresH2);
+highScoresH2.prepend(clearHighScoresBtn);
+
+
 
 
 
 function showHighScores() {
-    var newScore = document.createElement("li");
-    highScoresSection.appendChild(newScore);
-    var highScoreDisplay = JSON.parse(localStorage.getItem("highScores"))
-    newScore.textContent = highScoreDisplay
-    // - Retrieve high scores from local storage
-    //     - Display high scores
-    //         - Include option to restart the quiz or clear high scores
+    scoreList.classList.remove("hidden");
+    // Retrieve scores from localStorage and parse them
+    var highScoresArray = JSON.parse(localStorage.getItem("highScores")) || [];
+
+    // Sort the scores in descending order
+    highScoresArray.sort(function (a, b) {
+        return b.score - a.score;
+    });
+
+   
+
+    // Clear any existing content
+    highScoresSection.innerHTML = '';
+
+    // append a list of scores
+
+    highScoresArray.forEach(function (scoreItem) {
+        var scoreEntry = document.createElement("li");
+        scoreEntry.textContent = `${scoreItem.initials}: ${scoreItem.score}`;
+        scoreList.appendChild(scoreEntry);
+        scoreList.setAttribute("class", "highscore-list")
+    });
+
+    highScoresSection.appendChild(scoreList);
 }
+
 
 function saveHighScore(initials, score) {
     // - Save the score to local storage
