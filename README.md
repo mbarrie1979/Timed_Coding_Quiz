@@ -6,12 +6,6 @@ Welcome to the Timed Coding Quiz! Developed by Mark Barrie, this interactive web
 
 ![Intro Screen](./assets/readme/IntroScreen.png)
 
-## User Story
-```
-AS A coding boot camp student
-I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
-SO THAT I can gauge my progress compared to my peers
-```
 
 ## Features
 - **Start the Quiz**: Upon clicking the "Start Quiz" button, a timer begins, and the first question is presented.
