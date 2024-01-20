@@ -5,6 +5,8 @@ var gameOver = false;
 
 // hoisted varible for access outside of timer function
 var intervalId;
+// timer display before time counts down 
+var count = 180;
 
 
 // creation of elements and text for intro screen
@@ -26,10 +28,10 @@ startButton.addEventListener("click", startGame);
 
 // function for showing intro screen
 function showIntroScreen() {
-    count = 20;
+    count = 180;
+    scoreList.innerHTML = "";
     clearHighScoresBtn.classList.add("hidden");
     highScoresH2.classList.add("hidden");
-    scoreList.classList.add("hidden");
     initialsInput.classList.add("hidden");
     winLoseMessage.classList.add("hidden");
     submitButton.classList.add("hidden")
@@ -69,8 +71,7 @@ startOverButton.addEventListener("click", function () {
 
 });
 
-// timer display before time counts down 
-var count = 20;
+
 
 var score = 0;
 
@@ -93,22 +94,17 @@ function beginTimer(duration) {
     }, 1000)
 
 
-
-
-    // - Set timer to given duration
-    //     - Start countdown(decrement timer every second)
-    //         - Update timer display on screen
-    //             - Check if timer reaches 0, then call finishGame()
 }
 
 
 // function to start the game
 function startGame() {
+    chosenQuestions = [];
     gameOver = false;
     score = 0;
     scoreText.textContent = `Score ${score}`;
     countDown.textContent = count;
-    beginTimer(180)
+    beginTimer(count)
     h1.classList.add("hidden")
     h2.classList.add("hidden")
     startButton.classList.add("hidden")
@@ -117,10 +113,6 @@ function startGame() {
     scoreText.classList.remove("hidden")
     chooseQuestion()
 
-    // - Call beginTimer() with the specified duration
-    //     - Hide intro screen
-    //         - Display quiz section
-    //             - Call chooseQuestion() to display the first question
 }
 
 // creates elements related to the quiz, quiz text, score
@@ -150,13 +142,29 @@ function makeTestButtons() {
 }
 makeTestButtons()
 
+
+var chosenQuestions = [];
+
 // randomly chooses question from the object, displays question, and assigns answers to buttons
 function chooseQuestion() {
+    if (jsQuizQuestions.length === chosenQuestions.length) {
+        // All questions have been asked
+        finishGame();
+        return;
+    }
     var randomQuestion = Math.floor(Math.random() * jsQuizQuestions.length)
     var question = jsQuizQuestions[randomQuestion];
     var answers = [question.answers.a, question.answers.b, question.answers.c, question.answers.d];
     correctAnswer = question.correctAnswer
 
+    if (chosenQuestions.includes(randomQuestion)) {
+        // If so, choose another question
+        chooseQuestion();
+        return;
+    }
+
+    // Add the question index to the chosenQuestions array
+    chosenQuestions.push(randomQuestion);
 
     testText.textContent = `${question.question}`
     for (var i = 0; i < 4; i++) {
@@ -181,6 +189,7 @@ winLoseMessage.textContent = "";
 
 // creates element for user to enter initials when game is over
 var initialsInput = document.createElement("input");
+// creates element for user to submit initials with score
 var submitButton = document.createElement("button")
 messageSection.appendChild(initialsInput);
 messageSection.appendChild(submitButton);
@@ -225,13 +234,13 @@ function finishGame() {
     for (var i = 0; i < 4; i++) {
         testButtons[i].classList.add("hidden")
     };
-
-    testText.classList.add("hidden")
-    scoreText.classList.add("hidden")
-    winLoseMessage.textContent = `Your Final Score Is ${score}`
+    countDown.classList.add("hidden");
+    testText.classList.add("hidden");
+    scoreText.classList.add("hidden");
+    winLoseMessage.textContent = `Your Final Score Is ${score}`;
     initialsInput.value = "";
-    initialsInput.classList.remove("hidden")
-    submitButton.classList.remove("hidden")
+    initialsInput.classList.remove("hidden");
+    submitButton.classList.remove("hidden");
 
 }
 
@@ -247,10 +256,6 @@ highScoresSection.appendChild(scoreList);
 // empty array for scores
 var highScoresArray = [];
 
-
-function clearHighScores() {
-
-};
 
 function submitScore() {
     clearHighScoresBtn.classList.remove("hidden");
@@ -311,9 +316,7 @@ clearHighScoresBtn.addEventListener('click', function () {
 function showHighScores() {
     scoreList.innerHTML = "";
 
-    clearHighScoresBtn.classList.remove("hidden");
-    // highScoresH2.classList.remove("hidden");
-    // scoreList.classList.remove("hidden");
+    // clearHighScoresBtn.classList.remove("hidden");
     // Retrieve scores from localStorage and parse them
     var highScoresArray = JSON.parse(localStorage.getItem("highScores")) || [];
 
@@ -332,24 +335,13 @@ function showHighScores() {
         var scoreEntry = document.createElement("li");
         scoreEntry.textContent = `${scoreItem.initials}: ${scoreItem.score}`;
         scoreList.appendChild(scoreEntry);
-        scoreList.setAttribute("class", "highscore-list")
+        scoreList.setAttribute("id", "highscore-list");
     });
 
 
 }
 
 
-function saveHighScore(initials, score) {
-    // - Save the score to local storage
-}
-
-function loadHighScores() {
-    // - Load high scores from local storage
-}
-
-function clearHighScores() {
-    // - Clear high scores from local storage
-}
 
 
 const jsQuizQuestions = [
@@ -703,7 +695,7 @@ const jsQuizQuestions = [
         },
         correctAnswer: "a"
     }
-]
+];
 
 
 

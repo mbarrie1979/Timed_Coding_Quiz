@@ -101,7 +101,7 @@ h2 {
     margin: 0px;
 }
 
-.highscore-list {
+#highscore-list {
     display: flex;
     flex-direction: column;
     align-items: center;
