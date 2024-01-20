@@ -90,7 +90,7 @@ function beginTimer(duration) {
 
 
         }
-    }, 100)
+    }, 1000)
 
 
 
@@ -108,7 +108,7 @@ function startGame() {
     score = 0;
     scoreText.textContent = `Score ${score}`;
     countDown.textContent = count;
-    beginTimer(20)
+    beginTimer(180)
     h1.classList.add("hidden")
     h2.classList.add("hidden")
     startButton.classList.add("hidden")
