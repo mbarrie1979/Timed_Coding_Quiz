@@ -248,29 +248,55 @@ var highScoresArray = [];
 
 
 function submitScore() {
-    submitButton.classList.add("hidden")
-    initialsInput.classList.add("hidden")
-    var initials = initialsInput.value;
+    submitButton.classList.add("hidden");
+    initialsInput.classList.add("hidden");
+
+    var initials = initialsInput.value.trim();
+
+    // Load existing scores from localStorage
+    highScoresArray = JSON.parse(localStorage.getItem("highScores")) || [];
+
+    // Create a new score object
     var newScore = { initials: initials, score: score };
+
+    // Add the new score to the array
     highScoresArray.push(newScore);
-    localStorage.setItem("highScores", JSON.stringify(highScoresArray))
 
-    console.log("Score submitted!")
-    showHighScores()
+    // Save the updated array to localStorage
+    localStorage.setItem("highScores", JSON.stringify(highScoresArray));
 
+    console.log("Score submitted!");
+    showHighScores();
 }
 
 
 
 function showHighScores() {
-    var newScore = document.createElement("li");
-    highScoresSection.appendChild(newScore);
-    var highScoreDisplay = JSON.parse(localStorage.getItem("highScores"))
-    newScore.textContent = highScoreDisplay
-    // - Retrieve high scores from local storage
-    //     - Display high scores
-    //         - Include option to restart the quiz or clear high scores
+    // Retrieve scores from localStorage and parse them
+    var highScoresArray = JSON.parse(localStorage.getItem("highScores")) || [];
+
+    // Sort the scores in descending order
+    highScoresArray.sort(function (a, b) {
+        return b.score - a.score;
+    });
+
+    // Get the high-scores section element
+    var highScoresSection = document.getElementById("high-scores");
+
+    // Clear any existing content
+    highScoresSection.innerHTML = '';
+
+    // Create and append a list of scores
+    var scoreList = document.createElement("ol");
+    highScoresArray.forEach(function (scoreItem) {
+        var scoreEntry = document.createElement("li");
+        scoreEntry.textContent = `${scoreItem.initials}: ${scoreItem.score}`;
+        scoreList.appendChild(scoreEntry);
+    });
+
+    highScoresSection.appendChild(scoreList);
 }
+
 
 function saveHighScore(initials, score) {
     // - Save the score to local storage
