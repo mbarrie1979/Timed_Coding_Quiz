@@ -40,12 +40,21 @@ h2 {
 
 
 
-#startButton, #startOver, #test-button, #submit, #clear-button {
+#startButton, #startOver, #test-button, #submit{
     color: white;
     background-color: blue;
     /* margin-left: 45%; */
     height: 25px;
     width: 85px;
+}
+
+#clear-button {
+    color: white;
+    background-color: blue;
+    font-size: 12px;
+    /* margin-left: 45%; */
+    height: 35px;
+    width: 110px;
 }
 
 #startButton:hover, #startOver:hover, #test-button:hover, #submit:hover, #clear-button:hover {
@@ -79,9 +88,17 @@ h2 {
     margin: 1em;
 }
 
+#high-scores {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #highscore-h2 {
+    
     font-weight: bold;
     font-size: 60px;
+    margin: 0px;
 }
 
 .highscore-list {
