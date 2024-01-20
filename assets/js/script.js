@@ -27,6 +27,7 @@ startButton.addEventListener("click", startGame);
 // function for showing intro screen
 function showIntroScreen() {
     count = 20;
+    scoreList.classList.add("hidden")
     initialsInput.classList.add("hidden");
     winLoseMessage.classList.add("hidden");
     submitButton.classList.add("hidden")
@@ -247,6 +248,10 @@ highScoresSection.appendChild(highScores);
 var highScoresArray = [];
 
 
+function clearHighScores() {
+
+}
+
 function submitScore() {
     submitButton.classList.add("hidden");
     initialsInput.classList.add("hidden");
@@ -268,10 +273,33 @@ function submitScore() {
     console.log("Score submitted!");
     showHighScores();
 }
+// Get the high-scores section element
+var highScoresSection = document.getElementById("high-scores");
+
+// Create a heading (h2) for high scores
+var highScoresH2 = document.createElement("h2");
+highScoresH2.setAttribute("id", "highscore-h2");
+highScoresH2.textContent = "HIGH SCORES";
+
+// Create a button to clear high scores
+var clearHighScoresBtn = document.createElement("button");
+clearHighScoresBtn.setAttribute("id", "clear-button");
+clearHighScoresBtn.textContent = "Clear High Scores"; // Add text or other attributes as needed
+
+// Create an ordered list (ol) for the list of high scores
+var scoreList = document.createElement("ol");
+
+// Prepend the heading and button to the highScoresSection
+highScoresSection.prepend(scoreList);
+highScoresSection.prepend(highScoresH2);
+highScoresH2.prepend(clearHighScoresBtn);
+
+
 
 
 
 function showHighScores() {
+    scoreList.classList.remove("hidden");
     // Retrieve scores from localStorage and parse them
     var highScoresArray = JSON.parse(localStorage.getItem("highScores")) || [];
 
@@ -280,18 +308,18 @@ function showHighScores() {
         return b.score - a.score;
     });
 
-    // Get the high-scores section element
-    var highScoresSection = document.getElementById("high-scores");
+   
 
     // Clear any existing content
     highScoresSection.innerHTML = '';
 
-    // Create and append a list of scores
-    var scoreList = document.createElement("ol");
+    // append a list of scores
+
     highScoresArray.forEach(function (scoreItem) {
         var scoreEntry = document.createElement("li");
         scoreEntry.textContent = `${scoreItem.initials}: ${scoreItem.score}`;
         scoreList.appendChild(scoreEntry);
+        scoreList.setAttribute("class", "highscore-list")
     });
 
     highScoresSection.appendChild(scoreList);
