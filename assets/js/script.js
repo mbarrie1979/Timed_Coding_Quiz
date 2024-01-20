@@ -27,7 +27,9 @@ startButton.addEventListener("click", startGame);
 // function for showing intro screen
 function showIntroScreen() {
     count = 20;
-    scoreList.classList.add("hidden")
+    clearHighScoresBtn.classList.add("hidden");
+    highScoresH2.classList.add("hidden");
+    scoreList.classList.add("hidden");
     initialsInput.classList.add("hidden");
     winLoseMessage.classList.add("hidden");
     submitButton.classList.add("hidden")
@@ -88,7 +90,7 @@ function beginTimer(duration) {
 
 
         }
-    }, 1000)
+    }, 100)
 
 
 
@@ -231,30 +233,31 @@ function finishGame() {
     initialsInput.classList.remove("hidden")
     submitButton.classList.remove("hidden")
 
-    // - Stop the timer
-    //     - Display game over screen
-    //         - Show user's score
-    //             - Prompt for initials to save score
-    //                 - Call showHighScores()
 }
 
 submitButton.addEventListener("click", submitScore)
 
+// point to section in html for high scores
 var highScoresSection = document.getElementById("high-scores");
-var highScores = document.createElement("ol");
-highScoresSection.appendChild(highScores);
+// Create an ordered list (ol) for the list of high scores
+var scoreList = document.createElement("ol");
+// append the ordered list 
+highScoresSection.appendChild(scoreList);
 
-
+// empty array for scores
 var highScoresArray = [];
 
 
 function clearHighScores() {
 
-}
+};
 
 function submitScore() {
+    clearHighScoresBtn.classList.remove("hidden");
+    highScoresH2.classList.remove("hidden");
     submitButton.classList.add("hidden");
     initialsInput.classList.add("hidden");
+
 
     var initials = initialsInput.value.trim();
 
@@ -284,22 +287,33 @@ highScoresH2.textContent = "HIGH SCORES";
 // Create a button to clear high scores
 var clearHighScoresBtn = document.createElement("button");
 clearHighScoresBtn.setAttribute("id", "clear-button");
-clearHighScoresBtn.textContent = "Clear High Scores"; // Add text or other attributes as needed
+clearHighScoresBtn.textContent = "Clear High Scores";
 
-// Create an ordered list (ol) for the list of high scores
-var scoreList = document.createElement("ol");
 
-// Prepend the heading and button to the highScoresSection
-highScoresSection.prepend(scoreList);
+
+// Append the heading and button to the highScoresSection
+highScoresSection.prepend(clearHighScoresBtn);
 highScoresSection.prepend(highScoresH2);
-highScoresH2.prepend(clearHighScoresBtn);
+
+clearHighScoresBtn.addEventListener('click', function () {
+    console.log("clear button is clicked");
+    highScoresArray = [];
+    // Save the updated array to localStorage
+    localStorage.setItem("highScores", JSON.stringify(highScoresArray));
+    showHighScores();
+
+});
 
 
 
 
 
 function showHighScores() {
-    scoreList.classList.remove("hidden");
+    scoreList.innerHTML = "";
+
+    clearHighScoresBtn.classList.remove("hidden");
+    // highScoresH2.classList.remove("hidden");
+    // scoreList.classList.remove("hidden");
     // Retrieve scores from localStorage and parse them
     var highScoresArray = JSON.parse(localStorage.getItem("highScores")) || [];
 
@@ -308,10 +322,9 @@ function showHighScores() {
         return b.score - a.score;
     });
 
-   
 
-    // Clear any existing content
-    highScoresSection.innerHTML = '';
+
+
 
     // append a list of scores
 
@@ -322,7 +335,7 @@ function showHighScores() {
         scoreList.setAttribute("class", "highscore-list")
     });
 
-    highScoresSection.appendChild(scoreList);
+
 }
 
 
