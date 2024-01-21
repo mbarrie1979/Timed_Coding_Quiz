@@ -15,6 +15,10 @@ var buttonSection = document.getElementById("button-container");
 var h1 = document.createElement("h1");
 var h2 = document.createElement("h2");
 var startButton = document.createElement("button");
+var showHighScoresText = document.getElementById("show-high-scores");
+var showHighScoresLink = document.createElement("h3");
+displayText.prepend(showHighScoresLink);
+showHighScoresLink.textContent = "Show HighScores";
 displayText.appendChild(h1);
 displayText.appendChild(h2);
 buttonSection.appendChild(startButton);
@@ -30,6 +34,7 @@ startButton.addEventListener("click", startGame);
 function showIntroScreen() {
     count = 180;
     scoreList.innerHTML = "";
+    showHighScoresLink.classList.remove("hidden");
     clearHighScoresBtn.classList.add("hidden");
     highScoresH2.classList.add("hidden");
     initialsInput.classList.add("hidden");
@@ -41,10 +46,6 @@ function showIntroScreen() {
     h2.classList.remove("hidden");
     startButton.classList.remove("hidden");
 
-    // beginTimer(30);
-    // - Display intro screen with instructions
-    // - Include 'Start Quiz' button
-    //     - Hide quiz, timer, and score sections if they are visible
 }
 
 // Creates area for timer
@@ -99,12 +100,15 @@ function beginTimer(duration) {
 
 // function to start the game
 function startGame() {
+    scoreList.innerHTML = "";
+    highScoresH2.classList.add("hidden");
     chosenQuestions = [];
     gameOver = false;
     score = 0;
     scoreText.textContent = `Score ${score}`;
     countDown.textContent = count;
     beginTimer(count)
+    showHighScoresLink.classList.add("hidden");
     h1.classList.add("hidden")
     h2.classList.add("hidden")
     startButton.classList.add("hidden")
@@ -341,7 +345,10 @@ function showHighScores() {
 
 }
 
-
+showHighScoresLink.addEventListener('click', function () {
+    highScoresH2.classList.remove("hidden");
+    showHighScores();
+});
 
 
 const jsQuizQuestions = [
