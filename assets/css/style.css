@@ -5,10 +5,13 @@ body {
     align-items: center;
 }
 
+/* class created to hide elements */
 .hidden {
     display: none;
 }
 
+
+/* container for timer */
 #timer-container {
     display: flex;
     flex-direction: column;
@@ -16,22 +19,24 @@ body {
     justify-content: space-evenly;
 }
 
+
+/* timer display */
 #timer-container h2 {
     font-size: 40px;
 }
 
+/* Section with main title and directions */
 #display-text {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* justify-content: center; */
     width: 60%;
 }
 
+/* Coding Quiz Challenge */
 h1 {
     font-size: 40px;
     text-align: center;
 }
 
+/* all h2s */
 h2 {
     text-align: center;
     font-size: 20px;
@@ -39,8 +44,11 @@ h2 {
 }
 
 
-
-#startButton, #startOver, #test-button, #submit{
+/* css for buttons */
+#startButton,
+#startOver,
+#test-button,
+#submit {
     color: white;
     background-color: blue;
     /* margin-left: 45%; */
@@ -48,6 +56,7 @@ h2 {
     width: 85px;
 }
 
+/* clear button css */
 #clear-button {
     color: white;
     background-color: blue;
@@ -57,26 +66,30 @@ h2 {
     width: 110px;
 }
 
-#startButton:hover, #startOver:hover, #test-button:hover, #submit:hover, #clear-button:hover {
+/* for hovering */
+#startButton:hover,
+#startOver:hover,
+#test-button:hover,
+#submit:hover,
+#clear-button:hover {
     background-color: rgb(186, 173, 230);
 }
 
-#startOver {
-    /* position: absolute; */
-
-}
-
+/* section with questions and answer buttons */
 #test-section {
     display: flex;
     flex-direction: column;
 }
 
+/* css for buttons with answers on them */
 #test-button {
     width: auto;
     margin: .5em;
     font-size: 20px;
+
 }
 
+/* Section for "sorry" or "good job" */
 #message-section {
     display: flex;
     flex-direction: column;
@@ -84,23 +97,27 @@ h2 {
     margin: 1em;
 }
 
+/* submit button */
 #submit {
     margin: 1em;
 }
 
+/* high scores list */
 #high-scores {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* high score title */
 #highscore-h2 {
-    
+
     font-weight: bold;
     font-size: 60px;
     margin: 0px;
 }
 
+/* high score list */
 #highscore-list {
     display: flex;
     flex-direction: column;
@@ -108,4 +125,3 @@ h2 {
     color: black;
     font-size: 40px;
 }
-
